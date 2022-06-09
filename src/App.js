@@ -1,25 +1,36 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
 import './App.css';
+import { Client } from './Client';
+import Posts from './components/Posts'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+   const [article, setArticle] = useState([]);
+
+   useEffect (() => {
+       Client.getEntries()
+       .then((res) => {
+           setArticle(res.items);
+       })
+       .catch(console.error);
+   }, []);
+
+        return (
+            <div className="App">
+                <div className='container'>
+                    <header>
+                        <div className='wrapper'>
+                            <span className='logo'>React and Contentful</span>
+                        </div>
+                    </header>
+                    <main>
+                        <div className='wrapper'>
+                            <Posts posts={article} />
+                        </div>
+                    </main>
+                </div>
+            </div>
+        );
+    
+        }
 
 export default App;
